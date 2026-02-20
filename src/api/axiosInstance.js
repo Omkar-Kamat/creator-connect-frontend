@@ -2,7 +2,7 @@ import axios from "axios";
 import { errorToast } from "../utils/toast";
 
 const axiosInstance = axios.create({
-    baseURL: "https://creators-connect-backend.onrender.com/api/",
+    baseURL: "http://localhost:8080/api/",
     withCredentials: true,
     timeout: 15000,
 });
