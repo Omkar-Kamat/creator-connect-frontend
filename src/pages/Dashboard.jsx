@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getPublicAssets } from "../api/assetRoutes";
 import Card from "../components/Card";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading, setPublicAssets } from "../store/slices/assetSlice";
 
 const style = {
 
@@ -20,9 +22,11 @@ const style = {
 
 const Dashboard = () => {
 
-    const [assets, setAssets] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const dispatch = useDispatch();
 
+    const assets = useSelector(state => state.asset.publicAssets);
+    const loading = useSelector(state => state.asset.loading);
+    
     useEffect(() => {
 
         fetchAssets();
@@ -30,14 +34,14 @@ const Dashboard = () => {
     }, []);
 
     const fetchAssets = async () => {
-
+        dispatch(setLoading(true));
         try {
 
             const data = await getPublicAssets({
                 page: 1
             });
 
-            setAssets(data.assets);
+            dispatch(setPublicAssets(data.assets));
 
         } catch (error) {
 
@@ -48,7 +52,7 @@ const Dashboard = () => {
 
         } finally {
 
-            setLoading(false);
+            dispatch(setLoading(false));
 
         }
 

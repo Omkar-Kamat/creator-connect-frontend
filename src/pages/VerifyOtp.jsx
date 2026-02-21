@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { verifyOtp } from "../api/authRoutes";
-import { useAuth } from "../context/AuthContext";
 import { successToast, errorToast } from "../utils/toast";
 import Button from "../components/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../store/slices/authSlice";
+
 
 const style = {
 
@@ -32,9 +34,10 @@ const style = {
 
 const VerifyOtp = () => {
 
+    const dispatch = useDispatch();
+
     const location = useLocation();
     const navigate = useNavigate();
-    const { setUser } = useAuth();
 
     const [otp, setOtp] = useState("");
     const [loading, setLoading] = useState(false);
@@ -69,7 +72,7 @@ const VerifyOtp = () => {
                 otp
             });
 
-            setUser(data);
+            dispatch(setUser(data));
 
             successToast("Account created successfully");
 

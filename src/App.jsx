@@ -3,55 +3,73 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./routes/ProtectRoute";
-import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout";
 import { Toaster } from "react-hot-toast";
 import VerifyOtp from "./pages/VerifyOtp";
 import CreateAsset from "./pages/CreateAsset";
 import MyAssets from "./pages/MyAssets";
 
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setUser } from "./store/slices/authSlice";
+import { getCurrentUser } from "./api/authRoutes";
+
 function App() {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const restoreSession = async () => {
+            try {
+                const user = await getCurrentUser();
+
+                dispatch(setUser(user));
+            } catch {
+                dispatch(setUser(null));
+            }
+        };
+
+        restoreSession();
+    }, [dispatch]);
+
     return (
         <BrowserRouter>
-            <AuthProvider>
-                <Toaster
-                    position="bottom-left"
-                    toastOptions={{
-                        style: {
-                            background: "#111",
-                            color: "#fff",
-                            border: "1px solid #333",
-                        },
-                    }}
+            <Toaster
+                position="bottom-left"
+                toastOptions={{
+                    style: {
+                        background: "#111",
+                        color: "#fff",
+                        border: "1px solid #333",
+                    },
+                }}
+            />
+
+            <Routes>
+                <Route
+                    path="/"
+                    element={<Navigate to="/dashboard" replace />}
                 />
 
-                <Routes>
-                    <Route
-                        path="/"
-                        element={<Navigate to="/dashboard" replace />}
-                    />
+                <Route path="/signup" element={<Signup />} />
 
-                    <Route path="/signup" element={<Signup />} />
+                <Route path="/login" element={<Login />} />
 
-                    <Route path="/login" element={<Login />} />
+                <Route path="/verify-otp" element={<VerifyOtp />} />
 
-                    <Route path="/verify-otp" element={<VerifyOtp />} />
+                <Route
+                    element={
+                        <ProtectedRoute>
+                            <Layout />
+                        </ProtectedRoute>
+                    }
+                >
+                    <Route path="/dashboard" element={<Dashboard />} />
 
-                    <Route
-                        element={
-                            <ProtectedRoute>
-                                <Layout />
-                            </ProtectedRoute>
-                        }
-                    >
-                        <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/create-asset" element={<CreateAsset />} />
 
-                        <Route path="/create-asset" element={<CreateAsset />} />
-
-                        <Route path="/my-assets" element={<MyAssets />} />
-                    </Route>
-                </Routes>
-            </AuthProvider>
+                    <Route path="/my-assets" element={<MyAssets />} />
+                </Route>
+            </Routes>
         </BrowserRouter>
     );
 }

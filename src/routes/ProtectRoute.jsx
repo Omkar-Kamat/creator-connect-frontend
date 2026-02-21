@@ -1,5 +1,6 @@
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+
 
 const style = {
     wrapper: "min-h-screen flex items-center justify-center bg-black",
@@ -8,7 +9,8 @@ const style = {
 };
 
 const ProtectedRoute = ({ children }) => {
-    const { user, loading } = useAuth();
+
+    const {user, loading} = useSelector(state => state.auth)
 
     if (loading) {
         return (

@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 import { logoutUser } from "../api/authRoutes";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../store/slices/authSlice";
 
 const style = {
 
@@ -39,7 +40,10 @@ const style = {
 
 const Navbar = () => {
 
-  const { user, setUser } = useAuth();
+  const dispatch = useDispatch();
+
+  const user = useSelector(state => state.auth.user);
+  
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -48,7 +52,7 @@ const Navbar = () => {
     try {
 
       await logoutUser();
-      setUser(null);
+      dispatch(logout());
       navigate("/login");
       setMenuOpen(false);
 

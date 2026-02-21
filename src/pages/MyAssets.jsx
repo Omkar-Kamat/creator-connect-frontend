@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getMyAssets } from "../api/assetRoutes";
 import Card from "../components/Card";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading, setMyAssets } from "../store/slices/assetSlice";
 
 const style = {
     title: "text-3xl font-bold mb-6 text-white",
@@ -13,24 +15,28 @@ const style = {
 };
 
 const MyAssets = () => {
-    const [assets, setAssets] = useState([]);
-    const [loading, setLoading] = useState(true);
+
+    const dispatch = useDispatch();
+
+    const assets = useSelector(state => state.asset.myAssets);
+    const loading = useSelector(state => state.asset.loading);
 
     useEffect(() => {
         fetchAssets();
     }, []);
 
     const fetchAssets = async () => {
+        dispatch(setLoading(true))
         try {
             const data = await getMyAssets({
                 page: 1,
             });
 
-            setAssets(data.assets);
+            dispatch(setMyAssets(data.assets));
         } catch (error) {
             console.error("Failed to fetch assets:", error);
         } finally {
-            setLoading(false);
+            dispatch(setLoading(false));
         }
     };
 
