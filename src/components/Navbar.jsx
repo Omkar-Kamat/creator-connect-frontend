@@ -86,7 +86,6 @@ const Navbar = () => {
 
             <>
 
-              {/* Create FIRST */}
               <Link to="/create-asset" className={style.primaryButton}>
                 Create Asset
               </Link>
@@ -130,7 +129,7 @@ const Navbar = () => {
 
         </div>
 
-        {/* Mobile Hamburger */}
+        {/* Mobile*/}
         <button
           onClick={toggleMenu}
           className={style.mobileButton}
@@ -140,7 +139,6 @@ const Navbar = () => {
 
       </div>
 
-      {/* Mobile Menu */}
       {menuOpen && (
 
         <div className={style.mobileMenu}>
@@ -149,7 +147,6 @@ const Navbar = () => {
 
             <>
 
-              {/* Create FIRST */}
               <Link
                 to="/create-asset"
                 className={style.primaryButton}
