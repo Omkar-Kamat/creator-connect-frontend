@@ -8,23 +8,29 @@ import { Toaster } from "react-hot-toast";
 import VerifyOtp from "./pages/VerifyOtp";
 import CreateAsset from "./pages/CreateAsset";
 import MyAssets from "./pages/MyAssets";
+import Inbox from "./pages/Inbox";
+import Chat from "./pages/Chat";
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setUser } from "./store/slices/authSlice";
+import { setLoading, setUser } from "./store/slices/authSlice";
 import { getCurrentUser } from "./api/authRoutes";
 
 function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        console.log("App mounted");
         const restoreSession = async () => {
             try {
                 const user = await getCurrentUser();
-
+                console.log("User fetched:", user);
                 dispatch(setUser(user));
-            } catch {
+            } catch (error) {
+                console.log("No user session", error);
                 dispatch(setUser(null));
+            } finally {
+                dispatch(setLoading(false)); 
             }
         };
 
@@ -51,9 +57,7 @@ function App() {
                 />
 
                 <Route path="/signup" element={<Signup />} />
-
                 <Route path="/login" element={<Login />} />
-
                 <Route path="/verify-otp" element={<VerifyOtp />} />
 
                 <Route
@@ -64,10 +68,10 @@ function App() {
                     }
                 >
                     <Route path="/dashboard" element={<Dashboard />} />
-
                     <Route path="/create-asset" element={<CreateAsset />} />
-
                     <Route path="/my-assets" element={<MyAssets />} />
+                    <Route path="/messages" element={<Inbox />} />
+                    <Route path="/chat/:conversationId" element={<Chat />} />
                 </Route>
             </Routes>
         </BrowserRouter>

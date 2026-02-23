@@ -1,32 +1,22 @@
 import axios from "axios";
-import { errorToast } from "../utils/toast";
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080/api/",
-    withCredentials: true,
-    timeout: 15000,
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8080/api",
+  withCredentials: true,
+  timeout: 10000
 });
 
 axiosInstance.interceptors.response.use(
-    (response) => response,
+  (response) => response,
+  (error) => {
+    if (!error.response) {
+      return Promise.reject({
+        message: "Network error. Server unreachable."
+      });
+    }
 
-    (error) => {
-        const status = error.response?.status;
-        const message =
-            error.response?.data?.message ||
-            error.message ||
-            "Something went wrong";
-
-        if (status === 401) {
-            errorToast("Session expired. Please login again.");
-
-            window.dispatchEvent(new CustomEvent("auth:unauthorized"));
-        } else {
-            errorToast(message);
-        }
-
-        return Promise.reject(error);
-    },
+    return Promise.reject(error.response.data);
+  }
 );
 
 export default axiosInstance;

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     publicAssets: [],
     myAssets: [],
-    loading: false
+    loading: true
 }
 
 const assetSlice = createSlice({
@@ -15,7 +15,7 @@ const assetSlice = createSlice({
             state.loading = false;
         },
         setMyAssets: (state,action) =>{
-            state.myAssets = action.payload,
+            state.myAssets = action.payload;
             state.loading = false;
         },
         setLoading: (state,action)=>{
