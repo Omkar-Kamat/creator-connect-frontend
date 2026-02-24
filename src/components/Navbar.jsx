@@ -28,13 +28,17 @@ const style = {
     messageButton: "text-gray-300 hover:text-white font-medium transition",
 
     logout: "text-gray-400 hover:text-white font-medium transition text-left",
+    tokenBox:
+        "flex items-center gap-2 bg-gray-900 border border-gray-700 px-3 py-1.5 rounded-lg",
+    tokenCount: "text-white text-sm font-medium",
+    addButton:
+        "bg-white text-black px-2 py-0.5 rounded-md text-sm hover:bg-gray-200 transition",
 };
 
 const Navbar = () => {
     const dispatch = useDispatch();
 
     const user = useSelector((state) => state.auth.user);
-
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -70,7 +74,11 @@ const Navbar = () => {
                             >
                                 Create Asset
                             </Link>
-
+                            <Link to="/plans" className={style.tokenBox}>
+                                <span className={style.tokenCount}>
+                                    {user.tokens} Tokens
+                                </span>
+                            </Link>
                             <Link
                                 to="/messages"
                                 className={style.secondaryLink}
@@ -130,6 +138,11 @@ const Navbar = () => {
                                 onClick={() => setMenuOpen(false)}
                             >
                                 Create Asset
+                            </Link>
+                            <Link to="/plans" className={style.tokenBox}>
+                                <span className={style.tokenCount}>
+                                    {user.tokens} Tokens
+                                </span>
                             </Link>
 
                             <Link

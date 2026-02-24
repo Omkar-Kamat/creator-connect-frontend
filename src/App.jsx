@@ -10,6 +10,7 @@ import CreateAsset from "./pages/CreateAsset";
 import MyAssets from "./pages/MyAssets";
 import Inbox from "./pages/Inbox";
 import Chat from "./pages/Chat";
+import Plans from "./pages/Plans";
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -72,6 +73,7 @@ function App() {
                     <Route path="/my-assets" element={<MyAssets />} />
                     <Route path="/messages" element={<Inbox />} />
                     <Route path="/chat/:conversationId" element={<Chat />} />
+                    <Route path="/plans" element={<Plans />} />
                 </Route>
             </Routes>
         </BrowserRouter>
